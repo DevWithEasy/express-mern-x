@@ -1,26 +1,29 @@
 #!/usr/bin/env node
 
-const { execSync } = require('child_process');
-const fs = require('fs');
+const {execSync} = require('child_process');
 
-// Define your repository URL
-const repoUrl = 'https://github.com/DevWithEasy/express-mern-x';
+const runCommand = command =>{
+    try {
+        execSync(`${command}` ,{stdio : 'inherit'});
+    } catch (error) {
+        console.error(`Failed to execute ${command}`)
+        return false;
+    }
+    return true;
+}
 
-// Clone the repository
-execSync(`git clone ${repoUrl}`, { stdio: 'inherit' });
+const repoName = process.argv[2];
+const gitCheckoutCommand = `git clone --depth 1 https://github.com/DevWithEasy/express-mern-x ${repoName}`;
+const installDepsCommand = `cd ${repoName} && npm install`;
 
-// Navigate into the cloned repository directory
-const repoName = 'express-mern-x';
+console.log('Creating project...')
+const checkedout = runCommand(gitCheckoutCommand);
+if (!checkedout) process.exit(-1);
 
-// Replace with your actual repo name
-process.chdir(repoName);
+console.log('Installing dependencies...')
 
-// Install dependencies
-console.log('Installing dependencies...');
-execSync('npm install', { stdio: 'inherit' });
+const installed = runCommand(installDepsCommand);
+if (!installed) process.exit(-1);
 
-// Start the server (optional)
-console.log('Starting the server...');
-execSync('npm start', { stdio: 'inherit' });
-
-console.log('Express.js server setup is complete!');
+console.log('Project setup is complete!');
+console.log('cd ${repoName} && npm install');
