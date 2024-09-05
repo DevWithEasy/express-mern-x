@@ -1,7 +1,7 @@
-#!/usr/bin/env node
-
 const { execSync } = require('child_process');
 const readline = require('readline');
+const fs = require('fs');
+const path = require('path');
 
 const runCommand = (command) => {
     try {
@@ -27,6 +27,14 @@ const askProjectName = () => {
     });
 };
 
+const deleteBinFolder = (projectPath) => {
+    const binPath = path.join(projectPath, 'bin');
+    if (fs.existsSync(binPath)) {
+        fs.rmSync(binPath, { recursive: true, force: true });
+        console.log('bin folder deleted from the project.');
+    }
+};
+
 const main = () => {
     let repoName = process.argv[2];
 
@@ -46,6 +54,9 @@ const main = () => {
             console.log('Creating project...');
             const checkedout = runCommand(gitCheckoutCommand);
             if (!checkedout) process.exit(-1);
+
+            console.log('Removing bin folder from the project...');
+            deleteBinFolder(repoName);
 
             console.log('Installing dependencies...');
             const installed = runCommand(installDepsCommand);
