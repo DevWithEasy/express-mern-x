@@ -10,7 +10,14 @@
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
-  "keywords": [],
+  "keywords": [
+    "mern",
+    "express",
+    "mongodb",
+    "jwt",
+    "bcrypt",
+    "multer"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
