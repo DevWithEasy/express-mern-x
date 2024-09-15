@@ -1,6 +1,6 @@
 {
   "name": "express-mern-x",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Create express server starter Javascript or Typescript easily.",
   "bin": {
     "express-mern-x": "bin/cli.js"
