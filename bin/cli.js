@@ -2,8 +2,6 @@
 
 const { execSync } = require('child_process');
 const readline = require('readline');
-const fs = require('fs');
-const path = require('path');
 
 const runCommand = (command) => {
     try {
@@ -29,20 +27,6 @@ const askProjectName = () => {
     });
 };
 
-const deleteFolderRecursive = (folderPath) => {
-    if (fs.existsSync(folderPath)) {
-        fs.readdirSync(folderPath).forEach((file) => {
-            const curPath = path.join(folderPath, file);
-            if (fs.lstatSync(curPath).isDirectory()) {
-                deleteFolderRecursive(curPath);
-            } else {
-                fs.unlinkSync(curPath);
-            }
-        });
-        fs.rmdirSync(folderPath);
-    }
-};
-
 const main = () => {
     let repoName = process.argv[2];
 
@@ -62,11 +46,6 @@ const main = () => {
             console.log('Creating project...');
             const checkedout = runCommand(gitCheckoutCommand);
             if (!checkedout) process.exit(-1);
-
-            // Remove the bin folder after cloning
-            const binFolderPath = path.join(repoName, 'bin');
-            console.log('Removing bin folder...');
-            deleteFolderRecursive(binFolderPath);
 
             console.log('Installing dependencies...');
             const installed = runCommand(installDepsCommand);
